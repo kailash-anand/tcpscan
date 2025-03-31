@@ -1,12 +1,12 @@
 import ssl
 import socket
 import select
-import ipaddress
 
 target = None
 default_ports = [21, 22, 23, 25, 80, 110, 143, 443, 587, 853, 993, 3389, 8080]
 open_ports = list()
 scanned = False
+error = None
 
 GET_REQUEST = "GET / HTTP/1.0\r\n\r\n"
 GENERIC = "\r\n\r\n\r\n\r\n"
@@ -22,6 +22,7 @@ STATE_TABLE = {
 
 def find_open_ports(address: str, port_range: list) -> None:
     global target
+    target = address
 
     if port_range == None:
         port_range = default_ports
@@ -32,22 +33,29 @@ def find_open_ports(address: str, port_range: list) -> None:
         if is_port_open(port):
             open_ports.append(port)
 
+    if error:
+        return
+
     print("Open ports identified: " + str(open_ports))
 
 def is_port_open(port) -> bool:
     try:
         sock = socket.create_connection((target, port), timeout=1)
-        sock.shutdown(socket.SHUT_RDWR)
         sock.close()
         return True
-    except (socket.timeout, ConnectionRefusedError):
+    except (socket.timeout, ConnectionRefusedError, OSError):
         return False
     except Exception as e:
-        print(str(e)) 
-        print("Aborting scan...")
-        return
+        print(str(e))
+        global error 
+        error = e 
+        print("Scan Aborted")
+        return False
 
 def scan_open_ports() -> None:
+    if open_ports == [] or error:
+        return
+
     print("Connecting to open ports...")
     global scanned
 
@@ -70,6 +78,10 @@ def scan_open_ports() -> None:
         if not scanned:
             client_scan_open_generic_tcp_port(port)
 
+        if not scanned:
+            print("------------------------------------")
+            print("Host: " + target + ":" + str(port) + " failed")
+            print("Some error occured while probing this port")
         scanned = False
 
 def server_scan_open_tcp_port(port):
