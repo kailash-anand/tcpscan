@@ -22,9 +22,9 @@ STATE_TABLE = {
 
 def find_open_ports(address: str, port_range: list) -> None:
     global target_IP
-
+    
     if not is_ip(address):
-        target_IP = resolve_domain(target_host)
+        target_IP = resolve_domain(address)
     else:
         target_IP = address
 
@@ -157,6 +157,8 @@ def client_scan_open_tls_port(port):
     try:
         sock = socket.create_connection((target_IP, port), timeout=3)
         context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
         ssock = context.wrap_socket(sock)
     
         ssock.send(GET_REQUEST.encode('utf-8'))
@@ -204,6 +206,8 @@ def client_scan_open_generic_tls_port(port):
     try:
         sock = socket.create_connection((target_IP, port), timeout=3)
         context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
         ssock = context.wrap_socket(sock)
         ssock.send(GENERIC.encode('utf-8'))
 
