@@ -60,10 +60,10 @@ Response: HTTP/1.0 200 OK..Date: Mon, 31 Mar 2025 18:41:33 GMT..Expires: -1..Cac
 ```sh
 tcpscan imap.gmail.com
 ``` 
-Scanning for open ports... 
-Open ports identified: [587, 993] 
-Connecting to open ports... 
-'------------------------------------'
+Scanning for open ports...  
+Open ports identified: [587, 993]  
+Connecting to open ports...  
+'------------------------------------'  
 Host: imap.gmail.com:587
 Type: ( 1 ) TCP server-initiated
 Response: 220 smtp.gmail.com ESMTP 6a1803df08f44-6eec9797b3asm49500706d6.100 - gsmtp..
