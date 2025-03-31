@@ -3,7 +3,6 @@ import socket
 import select
 import ipaddress
 
-target_host = None
 target_IP = None
 default_ports = [21, 22, 23, 25, 80, 110, 143, 443, 587, 853, 993, 3389, 8080]
 open_ports = list()
@@ -22,15 +21,12 @@ STATE_TABLE = {
 }
 
 def find_open_ports(address: str, port_range: list) -> None:
-    global target_host
     global target_IP
 
     if not is_ip(address):
-        target_host = address
         target_IP = resolve_domain(target_host)
     else:
         target_IP = address
-        target_host = reverse_dns_lookup(target_IP)
 
     if port_range == None:
         port_range = default_ports
@@ -45,7 +41,7 @@ def find_open_ports(address: str, port_range: list) -> None:
 
 def is_port_open(port) -> bool:
     try:
-        sock = socket.create_connection((target_host, port), timeout=1)
+        sock = socket.create_connection((target_IP, port), timeout=1)
         sock.shutdown(socket.SHUT_RDWR)
         sock.close()
         return True
@@ -85,7 +81,7 @@ def server_scan_open_tcp_port(port):
     global scanned
     data = None
     try:
-        sock = socket.create_connection((target_host, port), timeout=3)
+        sock = socket.create_connection((target_IP, port), timeout=3)
     
         readable, _, _ = select.select([sock], [], [], 1)
         if readable:
@@ -108,10 +104,10 @@ def server_scan_open_tls_port(port):
     global scanned
     data = None
     try:
-        sock = socket.create_connection((target_host, port), timeout=3)
+        sock = socket.create_connection((target_IP, port), timeout=3)
 
         context = ssl.create_default_context()
-        ssock = context.wrap_socket(sock, server_hostname=target_host)
+        ssock = context.wrap_socket(sock)
 
         sreadable, _, _ = select.select([ssock], [], [], 1)
         if sreadable:
@@ -134,7 +130,7 @@ def client_scan_open_tcp_port(port):
     global scanned
     data = None
     try:
-        sock = socket.create_connection((target_host, port), timeout=3)
+        sock = socket.create_connection((target_IP, port), timeout=3)
 
         sock.send(GET_REQUEST.encode('utf-8'))
         readable, _, _ = select.select([sock], [], [], 1)
@@ -159,9 +155,9 @@ def client_scan_open_tls_port(port):
     data = None
     ssock = None
     try:
-        sock = socket.create_connection((target_host, port), timeout=3)
+        sock = socket.create_connection((target_IP, port), timeout=3)
         context = ssl.create_default_context()
-        ssock = context.wrap_socket(sock, server_hostname=target_host)
+        ssock = context.wrap_socket(sock)
     
         ssock.send(GET_REQUEST.encode('utf-8'))
         sreadable, _, _ = select.select([ssock], [], [], 1)
@@ -184,14 +180,15 @@ def client_scan_open_generic_tcp_port(port):
     global scanned
     data = None
     try:
-        sock = socket.create_connection((target_host, port), timeout=3)
+        sock = socket.create_connection((target_IP, port), timeout=3)
         sock.send(GENERIC.encode('utf-8'))
         readable, _, _ = select.select([sock], [], [], 1)
 
         if readable:
             data = sock.recv(1024).decode('utf-8', errors='replace')
-            scanned = True
-            print_info(5, port, data)
+            
+        scanned = True
+        print_info(5, port, data)
     except:
         pass
     finally:
@@ -205,17 +202,18 @@ def client_scan_open_generic_tls_port(port):
     data = None
     ssock = None
     try:
-        sock = socket.create_connection((target_host, port), timeout=3)
+        sock = socket.create_connection((target_IP, port), timeout=3)
         context = ssl.create_default_context()
-        ssock = context.wrap_socket(sock, server_hostname=target_host)
+        ssock = context.wrap_socket(sock)
         ssock.send(GENERIC.encode('utf-8'))
 
         sreadable, _, _ = select.select([ssock], [], [], 1)
         if sreadable:
             data = ssock.recv(1024).decode('utf-8', errors='replace')
-            ssock.close() 
-            scanned = True
-            print_info(6, port, data)
+            
+        ssock.close() 
+        scanned = True
+        print_info(6, port, data)
     except:
         pass
     finally:
@@ -237,14 +235,6 @@ def resolve_domain(domain):
         return ip
     except socket.gaierror as e:
         print(f"Failed to resolve {domain}: {e}")
-        return None
-    
-def reverse_dns_lookup(ip):
-    try:
-        hostname, _, _ = socket.gethostbyaddr(ip)
-        return hostname
-    except socket.herror as e:
-        print(f"Failed to resolve {ip}: {e}")
         return None
 
 def sanitize_output(data: str) -> str:
