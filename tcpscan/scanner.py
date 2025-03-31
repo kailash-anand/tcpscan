@@ -23,6 +23,7 @@ STATE_TABLE = {
 
 def find_open_ports(address: str, port_range: list) -> None:
     global target_host
+    global target_IP
 
     if not is_ip(address):
         target_host = address
