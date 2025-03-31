@@ -93,7 +93,6 @@ def server_scan_open_tcp_port(port):
         readable, _, _ = select.select([sock], [], [], 1)
         if readable:
             data = sock.recv(1024, socket.MSG_DONTWAIT).decode('utf-8', errors='replace')
-            sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
             if data:
@@ -119,11 +118,10 @@ def server_scan_open_tls_port(port):
         ssock = context.wrap_socket(sock, server_hostname=target)
 
         sreadable, _, _ = select.select([ssock], [], [], 1)
+        
         if sreadable:
             data = ssock.recv(1024).decode('utf-8', errors='replace')
-            ssock.shutdown(socket.SHUT_RDWR)
             ssock.close()
-            
             if data:
                 scanned = True
                 print_info(2, port, data)
