@@ -49,13 +49,13 @@ The tool relies on **socket** for packet capture and analysis.
 ```sh
 tcpscan -p 80 www.google.com
 ```
-Scanning for open ports...
-Open ports identified: [80]
-Connecting to open ports...
-'------------------------------------'
-Host: www.google.com:80
-Type: ( 3 ) HTTP server
-Response: HTTP/1.0 200 OK..Date: Mon, 31 Mar 2025 18:41:33 GMT..Expires: -1..Cache-Control: private, max-age=0..Content-Type: text/html; charset=ISO-8859-1..Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-AvtUhjzdJXIiFuODQmIZEA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp..P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."..Server: gws..X-XSS-Protection: 0..X-Frame-Options: SAMEORIGIN..Set-Cookie: AEC=AVcja2dV2qVKqI15rGykPQ8Z0kBMCGh_mednmOHaHmBGABq969aEeCUviA; expires=Sat, 27-Sep-2025 18:41:33 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax..Set-Cookie: NID=522=nVV7LplddeqOEmJtuF3ZjRtScxyikS3O6Z4ibt_Yu8fZm4gs1k4X44syWBNkEySwvg2gVn0Il0PXP90veN-T-Uqkiffi8l58LXOrof21OJox-7fvOJ2s51IQdsZS4G7xoI9Q2qemrLRDXa1rsff1kpSDEXQaFdGex_N-oiUwKNl7m04DljLtCEFX3fyB8IT32rLhAOvTNxiKQ-ZCtaHJ7zo; expires=Tue, 30-Sep-2025 18:41:33 GMT; path=/; domain=.google.com; HttpOnly..Accept-Rang
+Scanning for open ports...  
+Open ports identified: [80]  
+Connecting to open ports...  
+'------------------------------------'  
+Host: www.google.com:80  
+Type: ( 3 ) HTTP server  
+Response: HTTP/1.0 200 OK..Date: Mon, 31 Mar 2025 18:41:33 GMT..Expires: -1..Cache-Control: private, max-age=0..Content-Type: text/html; charset=ISO-8859-1..Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-AvtUhjzdJXIiFuODQmIZEA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp..P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."..Server: gws..X-XSS-Protection: 0..X-Frame-Options: SAMEORIGIN..Set-Cookie: AEC=AVcja2dV2qVKqI15rGykPQ8Z0kBMCGh_mednmOHaHmBGABq969aEeCUviA; expires=Sat, 27-Sep-2025 18:41:33 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax..Set-Cookie: NID=522=nVV7LplddeqOEmJtuF3ZjRtScxyikS3O6Z4ibt_Yu8fZm4gs1k4X44syWBNkEySwvg2gVn0Il0PXP90veN-T-Uqkiffi8l58LXOrof21OJox-7fvOJ2s51IQdsZS4G7xoI9Q2qemrLRDXa1rsff1kpSDEXQaFdGex_N-oiUwKNl7m04DljLtCEFX3fyB8IT32rLhAOvTNxiKQ-ZCtaHJ7zo; expires=Tue, 30-Sep-2025 18:41:33 GMT; path=/; domain=.google.com; HttpOnly..Accept-Rang  
 
 ```sh
 tcpscan imap.gmail.com
@@ -64,13 +64,13 @@ Scanning for open ports...
 Open ports identified: [587, 993]  
 Connecting to open ports...  
 '------------------------------------'  
-Host: imap.gmail.com:587
-Type: ( 1 ) TCP server-initiated
-Response: 220 smtp.gmail.com ESMTP 6a1803df08f44-6eec9797b3asm49500706d6.100 - gsmtp..
-'------------------------------------'
-Host: imap.gmail.com:993
-Type: ( 2 ) TLS server-initiated
-Response: * OK Gimap ready for requests from 129.49.100.67 lg17mb108135982qvb.. 
+Host: imap.gmail.com:587  
+Type: ( 1 ) TCP server-initiated  
+Response: 220 smtp.gmail.com ESMTP 6a1803df08f44-6eec9797b3asm49500706d6.100 - gsmtp..  
+'------------------------------------'  
+Host: imap.gmail.com:993  
+Type: ( 2 ) TLS server-initiated  
+Response: * OK Gimap ready for requests from 129.49.100.67 lg17mb108135982qvb..  
 
 ## Notes
 - The scanner uses a 3-second timeout when waiting for service responses.
