@@ -251,6 +251,6 @@ def sanitize_output(data: str) -> str:
 
 def print_info(type: int, port: int, data: str) -> None:
     print("------------------------------------")
-    print("Host:", target_IP + ":" + str(port))
+    print("Host:", str(target_IP) + ":" + str(port))
     print("Type: (", type, ")", STATE_TABLE.get(type))
     print("Response:", sanitize_output(data[:1024]))
