@@ -233,7 +233,6 @@ def is_ip(address):
 def resolve_domain(domain):
     try:
         ip = socket.gethostbyname(domain)
-        print(f"{domain} -> {ip}")
         return ip
     except socket.gaierror as e:
         print(f"Failed to resolve {domain}: {e}")
@@ -242,7 +241,6 @@ def resolve_domain(domain):
 def reverse_dns_lookup(ip):
     try:
         hostname, _, _ = socket.gethostbyaddr(ip)
-        print(f"{ip} -> {hostname}")
         return hostname
     except socket.herror as e:
         print(f"Failed to resolve {ip}: {e}")
