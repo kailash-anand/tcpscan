@@ -114,6 +114,8 @@ def server_scan_open_tls_port(port):
         sock = socket.create_connection((target, port), timeout=3)
 
         context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
         ssock = context.wrap_socket(sock, server_hostname=target)
 
         sreadable, _, _ = select.select([ssock], [], [], 1)
@@ -164,6 +166,8 @@ def client_scan_open_tls_port(port):
     try:
         sock = socket.create_connection((target, port), timeout=3)
         context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
         ssock = context.wrap_socket(sock, server_hostname=target)
     
         ssock.send(GET_REQUEST.encode('utf-8'))
@@ -211,6 +215,8 @@ def client_scan_open_generic_tls_port(port):
     try:
         sock = socket.create_connection((target, port), timeout=3)
         context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
         ssock = context.wrap_socket(sock, server_hostname=target)
         ssock.send(GENERIC.encode('utf-8'))
 
